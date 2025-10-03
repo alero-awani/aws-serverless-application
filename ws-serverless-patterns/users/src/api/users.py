@@ -44,7 +44,7 @@ def lambda_handler(event, context):
     try:
         # Get a list of all users
         if route_key == "GET /users":
-            ddb_response = ddbTable.scan(AttributesToGet="ALL_ATTRIBUTES")
+            ddb_response = ddbTable.scan(Select="ALL_ATTRIBUTES")
             response_body = ddb_response["Items"]
             status_code = 200
 
