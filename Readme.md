@@ -2,9 +2,9 @@
 
 ## Reference
 
-### User Service
+![user-service-diagram](assets/user-service.png)
 
-  ![user-service-diagram](assets/user-service.png)
+### Build and Deploy the Project
 
 1. Use the cookiecutter file to initialize the project structure.
 
@@ -37,3 +37,23 @@
     ```sh
     sam deploy --guided --stack-name ws-serverless-patterns-users
     ```
+
+1. Add Business Logic
+
+    ```sh
+    UsersFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+        Handler: src/api/users.lambda_handler
+        Description: Handler for all users related operations
+        Environment:
+            Variables:
+            USERS_TABLE: !Ref UsersTable
+        Policies:
+            - DynamoDBCrudPolicy:
+                TableName: !Ref UsersTable
+        Tags:
+            Stack: !Sub "${AWS::StackName}"
+    ```
+
+By convention, the name of the Lambda event handler function is lambda_handler. The handler property is the path to the Users.py file, but the suffix ".py" has been replaced with the function handler name ("lambda_handler"). This will become clearer when you later create the Lambda function.
